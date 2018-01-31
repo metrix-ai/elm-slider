@@ -6,6 +6,7 @@ import Metrix.Slider.Colors as Colors
 
 type alias State =
   {
+    drag : Maybe { element : Int, start : Int, current : Int },
     value : Maybe Int,
     thumbPosition : Float,
     activeFactor : Float,
@@ -28,6 +29,7 @@ setValue value state =
 selectedTest : State
 selectedTest =
   {
+    drag = Nothing,
     value = Just 4,
     thumbPosition = 0.75,
     activeFactor = 1,

@@ -3,9 +3,10 @@ module Metrix.Slider.Html exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Collage.Render
-import Metrix.Slider.State exposing (State)
-import Metrix.Slider.Update exposing (Update)
+import Metrix.Slider.State as State exposing (State)
+import Metrix.Slider.Update as Update exposing (Update)
 import Metrix.Slider.Collage as Collage
+import MouseEvents
 
 
 unlabeledSlider : Float -> State -> Html Update
@@ -15,6 +16,8 @@ unlabeledSlider width state =
   List.singleton |>
   div
     [
+      MouseEvents.onMouseDown
+        (\ event -> Debug.log "" <| Update.DragStartedUpdate event.clientPos.x event.targetPos.x),
       style
         [
           ("position", "fixed"),

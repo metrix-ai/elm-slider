@@ -5,4 +5,4 @@ import Metrix.Slider.Program as Program
 
 
 main =
-  Program.test1
+  Program.test2
