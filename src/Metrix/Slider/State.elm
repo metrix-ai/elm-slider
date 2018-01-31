@@ -1,16 +1,17 @@
 module Metrix.Slider.State exposing (..)
 
 import Array
+import Metrix.Slider.Colors as Colors
 
 
 type alias State =
   {
     value : Maybe Int,
-    thumbPosition : Maybe Float,
-    width : Float,
-    height : Float,
+    thumbPosition : Float,
+    activeFactor : Float,
     labelsFont : String,
-    labels : Array.Array String
+    labels : Array.Array String,
+    colors : Colors.Colors
   }
 
 setValue : Maybe Int -> State -> State
@@ -18,18 +19,19 @@ setValue value state =
   {state|
     value = value,
     thumbPosition =
+      value |>
       Maybe.map
-        (\ existingValue -> toFloat existingValue / toFloat (Array.length state.labels))
-        value
+        (\ existingValue -> toFloat existingValue / toFloat (Array.length state.labels)) |>
+      Maybe.withDefault 0.5
   }
 
 selectedTest : State
 selectedTest =
   {
     value = Just 4,
-    thumbPosition = Just 0.75,
-    width = 680,
-    height = 100,
+    thumbPosition = 0.75,
+    activeFactor = 1,
     labelsFont = "Arial",
-    labels = Array.fromList ["Полностью не согласен", "Скорее не согласен", "Затрудняюсь ответить", "Скорее согласен", "Полностью не согласен"]
+    labels = Array.fromList ["Полностью не согласен", "Скорее не согласен", "Затрудняюсь ответить", "Скорее согласен", "Полностью не согласен"],
+    colors = Colors.metrix
   }
