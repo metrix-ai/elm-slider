@@ -25,5 +25,5 @@ test2 =
       init = (State.selectedTest, Cmd.none),
       view = Html.unlabeledSlider 518,
       update = Update.update,
-      subscriptions = Subscriptions.drag
+      subscriptions = Subscriptions.all
     }

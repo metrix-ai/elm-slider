@@ -1,6 +1,6 @@
 module Metrix.Slider.Update exposing (..)
 
-import Metrix.Slider.State exposing (State)
+import Metrix.Slider.State as State exposing (State)
 import Time exposing (Time)
 
 
@@ -13,17 +13,17 @@ type Update =
 
 update : Update -> State -> (State, Cmd Update)
 update update =
-  simple <| \ state ->
     case update of
       DragStartedUpdate mouse element ->
-        Debug.log (toString mouse) <|
-        {state| drag = Just {element = element, mouse = mouse}}
-      DragProgressedUpdate mouse ->
-        Debug.log (toString mouse) <|
-        {state| drag = Maybe.map (\ dragState -> {dragState| mouse = mouse}) state.drag}
+        simple <| \ state ->
+          {state| drag = Just {element = element, mouse = mouse}} |>
+          State.setMouseDownPosition mouse
+      DragProgressedUpdate mouse -> simple (State.setMouseDownPosition mouse)
       DragStoppedUpdate mouse ->
-        Debug.log (toString mouse) <|
-        {state| drag = Nothing}
+        simple <| \ state ->
+          {state| drag = Nothing}
+      TimeDiffUpdate time ->
+        simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations time
       _ ->
         Debug.crash "TODO"
 
