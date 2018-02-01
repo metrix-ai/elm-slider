@@ -1,12 +1,14 @@
 module Metrix.Slider.Update exposing (..)
 
 import Metrix.Slider.State exposing (State)
+import Time exposing (Time)
 
 
 type Update =
   DragStartedUpdate Int Int |
   DragProgressedUpdate Int |
   DragStoppedUpdate Int |
+  TimeDiffUpdate Time |
   ValueSetUpdate Int
 
 update : Update -> State -> (State, Cmd Update)

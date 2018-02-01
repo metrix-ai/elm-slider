@@ -6,6 +6,7 @@ import Metrix.Slider.Colors as Colors
 
 type alias State =
   {
+    animations : List AnimationState,
     drag : Maybe { element : Int, mouse : Int },
     value : Maybe Int,
     thumbPosition : Float,
@@ -14,6 +15,9 @@ type alias State =
     labels : Array.Array String,
     colors : Colors.Colors
   }
+
+type alias AnimationState =
+  ()
 
 setValue : Maybe Int -> State -> State
 setValue value state =
@@ -29,6 +33,7 @@ setValue value state =
 selectedTest : State
 selectedTest =
   {
+    animations = [],
     drag = Nothing,
     value = Just 4,
     thumbPosition = 0.75,
