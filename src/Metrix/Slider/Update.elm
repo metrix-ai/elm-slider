@@ -20,7 +20,8 @@ update update =
         Debug.log (toString mouse) <|
         {state| drag = Maybe.map (\ dragState -> {dragState| mouse = mouse}) state.drag}
       DragStoppedUpdate mouse ->
-        Debug.crash "TODO"
+        Debug.log (toString mouse) <|
+        {state| drag = Nothing}
       _ ->
         Debug.crash "TODO"
 
