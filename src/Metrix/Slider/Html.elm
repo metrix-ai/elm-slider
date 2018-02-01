@@ -20,7 +20,7 @@ unlabeledSlider width state =
   autosizedCollage
     [
       SvgEvents.onMouseDownWithDetails
-        (\ event -> Debug.log "" <| Update.DragStartedUpdate (Tuple.first event.mousePosition) (Tuple.first event.elementPosition)),
+        (\ event -> Update.DragStartedUpdate (Tuple.first event.mousePosition) (Tuple.first event.elementPosition)),
       style
         [
           ("position", "fixed"),
