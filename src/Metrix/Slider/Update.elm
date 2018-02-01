@@ -12,5 +12,5 @@ type Update =
 update : Update -> State -> (State, Cmd Update)
 update update state =
   case update of
-    DragStartedUpdate mouse element -> Debug.crash "TODO"
+    DragStartedUpdate mouse element -> Debug.crash ("TODO: " ++ toString (mouse, element))
     _ -> Debug.crash "TODO"
