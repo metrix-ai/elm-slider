@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Metrix Avon Slider",
-    "repository": "https://github.com/metrix-ai/avon-questionnaire-front.git",
+    "repository": "https://github.com/metrix-ai/elm-slider.git",
     "license": "Proprietary",
     "source-directories": [
         "src",
