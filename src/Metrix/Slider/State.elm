@@ -35,17 +35,18 @@ setMouseDownPosition mouse state =
         Just dragState ->
           let
             scaleProgress = toFloat (mouse - dragState.element - state.scaleXOffset) / toFloat state.scaleWidth
-            newValue = round (scaleProgress * toFloat (Array.length state.labels))
+            newValue = round (scaleProgress * toFloat (Array.length state.labels - 1))
           in
             if newValue /= value
               then
                 let
                   newAnimation =
                     let
-                      length = toFloat (Array.length state.labels)
-                      start = toFloat value / length
-                      end = toFloat newValue / length
-                    in { start = start, end = end, progress = 0, duration = Time.inMilliseconds 200 }
+                      max = toFloat (Array.length state.labels - 1)
+                      start = toFloat value / max
+                      end = toFloat newValue / max
+                    in
+                      Debug.log (toString value) { start = start, end = end, progress = 0, duration = Time.inMilliseconds 200 }
                 in
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
@@ -62,7 +63,13 @@ setMouseDownPosition mouse state =
 updatePositionAnimations : Time -> State -> State
 updatePositionAnimations timeDiff state =
   state.thumbPositionAnimations |>
-  List.map (\ x -> {x| progress = x.progress + timeDiff / x.duration}) |>
+  List.map (\ x ->
+    let
+      newProgress = 
+        if x.progress < 1
+          then min 1 (x.progress + timeDiff / x.duration)
+          else (x.progress + timeDiff / x.duration)
+    in {x| progress = newProgress}) |>
   List.filter (\ x -> x.progress <= 1) |>
   \ newAnimationStates -> {state| thumbPositionAnimations = newAnimationStates}
 
@@ -74,9 +81,11 @@ applyThumbPositionAnimations timeDiff state =
 interpretThumbPositionAnimation : Time -> AnimationState -> State -> State
 interpretThumbPositionAnimation timeDiff animationState state =
   let
-    delta = (animationState.end - animationState.start) * animationState.progress / toFloat (Array.length state.labels)
-  in 
-  {state| thumbPosition = state.thumbPosition + delta}
+    delta =
+      (animationState.end - animationState.start) *
+      timeDiff / animationState.duration
+    newThumbPosition = state.thumbPosition + delta
+  in {state| thumbPosition = Debug.log (toString (animationState.progress)) newThumbPosition}
 
 setValue : Maybe Int -> State -> State
 setValue value state =
@@ -96,7 +105,7 @@ selectedTest =
     scaleWidth = 518,
     thumbPositionAnimations = [],
     drag = Nothing,
-    value = Just 4,
+    value = Just 3,
     thumbPosition = 0.75,
     activeFactor = 1,
     labelsFont = "Arial",
