@@ -24,6 +24,7 @@ type alias AnimationState =
     start : Float,
     end : Float,
     progress : Float,
+    previousProgress : Float,
     duration : Time
   }
 
@@ -46,7 +47,7 @@ setMouseDownPosition mouse state =
                       start = toFloat value / max
                       end = toFloat newValue / max
                     in
-                      Debug.log (toString value) { start = start, end = end, progress = 0, duration = Time.inMilliseconds 200 }
+                      { start = start, end = end, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 200 }
                 in
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
@@ -69,23 +70,23 @@ updatePositionAnimations timeDiff state =
         if x.progress < 1
           then min 1 (x.progress + timeDiff / x.duration)
           else (x.progress + timeDiff / x.duration)
-    in {x| progress = newProgress}) |>
+    in {x| progress = newProgress, previousProgress = x.progress}) |>
   List.filter (\ x -> x.progress <= 1) |>
   \ newAnimationStates -> {state| thumbPositionAnimations = newAnimationStates}
 
-applyThumbPositionAnimations : Time -> State -> State
-applyThumbPositionAnimations timeDiff state =
+applyThumbPositionAnimations : State -> State
+applyThumbPositionAnimations state =
   state.thumbPositionAnimations |>
-  List.foldr (interpretThumbPositionAnimation timeDiff) state
+  List.foldr (interpretThumbPositionAnimation) state
 
-interpretThumbPositionAnimation : Time -> AnimationState -> State -> State
-interpretThumbPositionAnimation timeDiff animationState state =
+interpretThumbPositionAnimation : AnimationState -> State -> State
+interpretThumbPositionAnimation animationState state =
   let
     delta =
       (animationState.end - animationState.start) *
-      timeDiff / animationState.duration
+      (animationState.progress - animationState.previousProgress)
     newThumbPosition = state.thumbPosition + delta
-  in {state| thumbPosition = Debug.log (toString (animationState.progress)) newThumbPosition}
+  in {state| thumbPosition = newThumbPosition}
 
 setValue : Maybe Int -> State -> State
 setValue value state =

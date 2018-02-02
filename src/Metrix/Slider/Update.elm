@@ -23,7 +23,7 @@ update update =
         simple <| \ state ->
           {state| drag = Nothing}
       TimeDiffUpdate time ->
-        simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations time
+        simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations
       _ ->
         Debug.crash "TODO"
 
