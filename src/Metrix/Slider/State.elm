@@ -3,6 +3,7 @@ module Metrix.Slider.State exposing (..)
 import Array
 import Metrix.Slider.Colors as Colors
 import Time exposing (Time)
+import Ease
 
 
 type alias State =
@@ -82,22 +83,12 @@ applyThumbPositionAnimations state =
 interpretThumbPositionAnimation : AnimationState -> State -> State
 interpretThumbPositionAnimation animationState state =
   let
+    ease = Ease.inOutCirc
     delta =
       (animationState.end - animationState.start) *
-      (animationState.progress - animationState.previousProgress)
+      (ease animationState.progress - ease animationState.previousProgress)
     newThumbPosition = state.thumbPosition + delta
   in {state| thumbPosition = newThumbPosition}
-
-setValue : Maybe Int -> State -> State
-setValue value state =
-  {state|
-    value = value,
-    thumbPosition =
-      value |>
-      Maybe.map
-        (\ existingValue -> toFloat existingValue / toFloat (Array.length state.labels)) |>
-      Maybe.withDefault 0.5
-  }
 
 selectedTest : State
 selectedTest =
