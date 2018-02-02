@@ -37,7 +37,10 @@ setMouseDownPosition mouse state =
         Just dragState ->
           let
             scaleProgress = toFloat (mouse - dragState.element - state.scaleXOffset) / toFloat state.scaleWidth
-            newValue = round (scaleProgress * toFloat (Array.length state.labels - 1))
+            newValue =
+              round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
+              min 4 |>
+              max 0
           in
             if newValue /= value
               then
@@ -48,7 +51,7 @@ setMouseDownPosition mouse state =
                       start = toFloat value / max
                       end = toFloat newValue / max
                     in
-                      { start = start, end = end, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 200 }
+                      { start = start, end = end, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 300 }
                 in
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
@@ -67,7 +70,7 @@ updatePositionAnimations timeDiff state =
   state.thumbPositionAnimations |>
   List.map (\ x ->
     let
-      newProgress = 
+      newProgress =
         if x.progress < 1
           then min 1 (x.progress + timeDiff / x.duration)
           else (x.progress + timeDiff / x.duration)
