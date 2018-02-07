@@ -17,6 +17,7 @@ type alias State =
     activeFactor : Float,
     labelsFont : String,
     labels : Array.Array String,
+    hoverLable : Maybe Int,
     colors : Colors.Colors
   }
 
@@ -105,5 +106,6 @@ selectedTest =
     activeFactor = 1,
     labelsFont = "Arial",
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
-    colors = Colors.metrix
+    colors = Colors.metrix,
+    hoverLable = Nothing
   }

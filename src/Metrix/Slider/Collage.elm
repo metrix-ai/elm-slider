@@ -3,9 +3,10 @@ module Metrix.Slider.Collage exposing (..)
 import Collage exposing (..)
 import Collage.Layout exposing (..)
 import Collage.Text exposing(..)
+import Collage.Events exposing(..)
 import Color exposing(..)
 import Metrix.Slider.State exposing (State)
-import Metrix.Slider.Update exposing (Update)
+import Metrix.Slider.Update exposing (..)
 import Color.Interpolate
 import Array
 import String
@@ -28,7 +29,7 @@ labels scaleWidth state =
     (\ index label ->
       let
         x = (scaleWidth / toFloat (Array.length state.labels - 1)) * toFloat index
-      in shift (x, -30) (name "ooo" ((textLabel index state) label))) |>
+      in shift (x, -30) ((textLabel index state) label)) |>
   Array.toList |>
   group
 
@@ -37,27 +38,33 @@ textLabel index state label =
   let
     labelt = (String.lines label)
   in
-    List.indexedMap (lineLabel index state.thumbPosition) labelt |>
-    group
+    List.indexedMap (lineLabel index state.thumbPosition state.hoverLable) labelt |>
+    group |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
 
-lineLabel : Int -> Float -> Int -> String -> Collage Update
-lineLabel index1 thumbPosition index str =
+lineLabel : Int -> Float -> Maybe Int -> Int -> String -> Collage Update
+lineLabel indexDot thumbPosition hover index str =
   let
-    x = index1 * 25
     text =
       fromString str
-      |> size normal
+      |> size small
       |> typeface (Font "DINPro")
       |> color (Color.rgb 74 74 74)
+      |> weight Light
   in
     let
       res =
-        if x == (round (thumbPosition * 100)) then
+        if indexDot == (round (thumbPosition * 4)) then
           text |> weight Medium
         else
-          text |> weight Light
+          case hover of
+            Just i -> if indexDot == i then
+                          text |> Collage.Text.line Under
+                        else
+                          text
+            _ -> text
+
     in
-      res |> rendered |> shift (0, -20 * (toFloat index)) |> name "lll"
+      res |> rendered |> shift (0, -15 * (toFloat index))
 
 scaleBar : Float -> SliderRender
 scaleBar scaleWidth state =

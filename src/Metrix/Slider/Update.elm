@@ -9,7 +9,9 @@ type Update =
   DragProgressedUpdate Int |
   DragStoppedUpdate Int |
   TimeDiffUpdate Time |
-  ValueSetUpdate Int
+  ValueSetUpdate Int |
+  EnterLabel Int |
+  LeaveLabel
 
 update : Update -> State -> (State, Cmd Update)
 update update =
@@ -24,6 +26,8 @@ update update =
           {state| drag = Nothing}
       TimeDiffUpdate time ->
         simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations
+      EnterLabel index -> simple <| \state -> {state| hoverLable = Just index}
+      LeaveLabel -> simple <| \state -> {state| hoverLable = Nothing}
       _ ->
         Debug.crash "TODO"
 
