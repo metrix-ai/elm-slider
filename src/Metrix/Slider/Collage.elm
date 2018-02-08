@@ -38,27 +38,27 @@ textLabel index state label =
   let
     labelt = (String.lines label)
   in
-    List.indexedMap (lineLabel index state.thumbPosition state.hoverLable) labelt |>
+    List.indexedMap (lineLabel index state) labelt |>
     group |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
 
-lineLabel : Int -> Float -> Maybe Int -> Int -> String -> Collage Update
-lineLabel indexDot thumbPosition hover index str =
+lineLabel : Int -> State -> Int -> String -> Collage Update
+lineLabel indexDot state index str =
   let
     text =
       fromString str
       |> size small
       |> typeface (Font "DINPro")
-      |> color (Color.rgb 74 74 74)
+      |>  color state.colors.inactiveLabel
       |> weight Light
   in
     let
       res =
-        if indexDot == (round (thumbPosition * 4)) then
-          text |> weight Medium
+        if indexDot == (round (state.thumbPosition * 4)) then
+          text |> weight Medium |> color state.colors.activeLabel
         else
-          case hover of
+          case state.hoverLable of
             Just i -> if indexDot == i then
-                          text |> Collage.Text.line Under
+                          text |> color state.colors.activeLabel
                         else
                           text
             _ -> text
@@ -97,8 +97,8 @@ scaleStops scaleWidth state =
 
 thumb : SliderRender
 thumb state =
-  filled
-    (uniform state.colors.thumb)
+  styled
+    (uniform state.colors.thumb, solid 0.5 (uniform state.colors.outline))
     (circle 12) |>
   center
 

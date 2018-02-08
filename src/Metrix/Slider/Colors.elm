@@ -27,13 +27,14 @@ metrix =
     black = rgb 29 29 27
     veryLightBlue = rgb 229 236 255
     darkSkyBlue = rgb 74 144 226
+    outLineGrey = rgba 78 75 75 0.69
   in
     {
       activeBar = darkSkyBlue,
       inactiveBar = brownishGrey,
       thumb = darkSkyBlue,
       scaleStop = white,
-      outline = brownishGrey,
-      activeLabel = greyishBrown,
+      outline = outLineGrey,
+      activeLabel = darkSkyBlue,
       inactiveLabel = greyishBrown
     }
