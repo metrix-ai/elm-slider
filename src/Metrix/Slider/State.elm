@@ -35,7 +35,7 @@ type alias State =
     thumbPositionAnimations : List AnimationState,
     drag : Maybe { element : Int, mouse : Int },
     value : Maybe Int,
-    thumbPosition : Float,
+    thumbPosition : Maybe Float,
     activeFactor : Float,
     labelsFont : String,
     labels : Array.Array String,
@@ -59,17 +59,17 @@ type alias AnimationState =
 -}
 setMouseDownPosition : Int -> State -> State
 setMouseDownPosition mouse state =
-  case state.value of
-    Just value ->
-      case state.drag of
-        Just dragState ->
-          let
-            scaleProgress = toFloat (mouse - dragState.element - state.scaleXMargin) / toFloat state.scaleWidth
-            newValue =
-              round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
-              min 4 |>
-              max 0
-          in
+  case state.drag of
+    Just dragState ->
+      let
+        scaleProgress = toFloat (mouse - dragState.element - state.scaleXMargin) / toFloat state.scaleWidth
+        newValue =
+          round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
+          min 4 |>
+          max 0
+      in
+        case state.value of
+          Just value ->
             if newValue /= value
               then
                 let
@@ -90,8 +90,8 @@ setMouseDownPosition mouse state =
                 {state|
                   drag = Just {dragState| mouse = mouse}
                 }
-        _ -> state
-    _ -> Debug.crash "TODO"
+          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4)}
+    _ -> state
 
 {-|
 
@@ -124,8 +124,11 @@ interpretThumbPositionAnimation animationState state =
     delta =
       (animationState.end - animationState.start) *
       (ease animationState.progress - ease animationState.previousProgress)
-    newThumbPosition = state.thumbPosition + delta
-  in {state| thumbPosition = newThumbPosition}
+    newThumbPosition =
+      case state.thumbPosition of
+        Just position -> position + delta
+        _ -> animationState.end
+  in {state| thumbPosition = Just newThumbPosition}
 
 {-|
 Init default slider
@@ -137,8 +140,8 @@ defaultInit =
     scaleWidth = 518,
     thumbPositionAnimations = [],
     drag = Nothing,
-    value = Just 3,
-    thumbPosition = 0.75,
+    value = Nothing,
+    thumbPosition = Nothing,
     activeFactor = 1,
     labelsFont = "Arial",
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],

@@ -4,7 +4,6 @@ import Collage exposing (..)
 import Collage.Layout exposing (..)
 import Collage.Text exposing(..)
 import Collage.Events exposing(..)
-import Color exposing(..)
 import Metrix.Slider.State exposing (State)
 import Metrix.Slider.Update exposing (..)
 import Color.Interpolate
@@ -48,20 +47,29 @@ lineLabel indexDot state index str =
       fromString str
       |> size small
       |> typeface (Font "DINPro")
-      |>  color state.colors.inactiveLabel
+      |> color state.colors.inactiveLabel
       |> weight Light
   in
     let
       res =
-        if indexDot == (round (state.thumbPosition * 4)) then
-          text |> weight Medium |> color state.colors.activeLabel
-        else
-          case state.hoverLable of
-            Just i -> if indexDot == i then
-                          text |> color state.colors.activeLabel
-                        else
-                          text
-            _ -> text
+        case state.value of
+          Just position ->
+            if indexDot == position then
+              text |> weight Medium |> color state.colors.activeLabel
+            else
+              case state.hoverLable of
+                Just i -> if indexDot == i then
+                              text |> color state.colors.activeLabel
+                            else
+                              text
+                _ -> text
+          _ ->
+            case state.hoverLable of
+              Just i -> if indexDot == i then
+                            text |> color state.colors.activeLabel
+                          else
+                            text
+              _ -> text
 
     in
       res |> rendered |> shift (0, -15 * (toFloat index))
@@ -102,11 +110,19 @@ thumb state =
     (circle 12) |>
   center
 
-unlabeledSlider : Float -> SliderRender
-unlabeledSlider scaleWidth state =
-  group
-    [
-      thumb state |> shift (scaleWidth * state.thumbPosition, 0),
-      scale scaleWidth state,
-      labels scaleWidth state
-    ]
+labeledSlider : Float -> SliderRender
+labeledSlider scaleWidth state =
+    case state.thumbPosition of
+      Just position ->
+        group
+          [
+            thumb state |> shift (scaleWidth * position, 0),
+            scale scaleWidth state,
+            labels scaleWidth state
+          ]
+      _ ->
+        group
+          [
+            scale scaleWidth state,
+            labels scaleWidth state
+          ]

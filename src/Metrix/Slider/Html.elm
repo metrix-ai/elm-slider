@@ -31,7 +31,7 @@ Take width, instance of the slider model and render Metrix slider
 -}
 labeledSlider : Float -> State -> Html Update
 labeledSlider width state =
-  div [] [(Collage.unlabeledSlider width state |>
+  div [] [(Collage.labeledSlider width state |>
   autosizedCollage state
     [
       SvgEvents.onMouseDownWithDetails
