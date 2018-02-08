@@ -4,8 +4,7 @@
     "repository": "https://github.com/metrix-ai/elm-slider.git",
     "license": "Proprietary",
     "source-directories": [
-        "src",
-        "vendor/elm-collage"
+        "src"
     ],
     "exposed-modules": [],
     "native-modules": true,
@@ -20,7 +19,8 @@
         "elm-lang/svg": "2.0.0 <= v < 3.0.0",
         "eskimoblood/elm-color-extra": "5.0.0 <= v < 6.0.0",
         "mbr/elm-mouse-events": "1.0.4 <= v < 2.0.0",
-        "mgold/elm-animation": "1.0.5 <= v < 2.0.0"
+        "mgold/elm-animation": "1.0.5 <= v < 2.0.0",
+        "timjs/elm-collage": "1.6.0 <= v < 2.0.0"
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }

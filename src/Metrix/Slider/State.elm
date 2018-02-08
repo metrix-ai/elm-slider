@@ -8,7 +8,7 @@ import Ease
 
 type alias State =
   {
-    scaleXOffset : Int,
+    scaleXMargin : Int,
     scaleWidth : Int,
     thumbPositionAnimations : List AnimationState,
     drag : Maybe { element : Int, mouse : Int },
@@ -17,6 +17,7 @@ type alias State =
     activeFactor : Float,
     labelsFont : String,
     labels : Array.Array String,
+    hoverLable : Maybe Int,
     colors : Colors.Colors
   }
 
@@ -36,7 +37,7 @@ setMouseDownPosition mouse state =
       case state.drag of
         Just dragState ->
           let
-            scaleProgress = toFloat (mouse - dragState.element - state.scaleXOffset) / toFloat state.scaleWidth
+            scaleProgress = toFloat (mouse - dragState.element - state.scaleXMargin) / toFloat state.scaleWidth
             newValue =
               round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
               min 4 |>
@@ -62,7 +63,7 @@ setMouseDownPosition mouse state =
                 {state|
                   drag = Just {dragState| mouse = mouse}
                 }
-        _ -> Debug.crash "TODO"
+        _ -> state
     _ -> Debug.crash "TODO"
 
 updatePositionAnimations : Time -> State -> State
@@ -86,7 +87,7 @@ applyThumbPositionAnimations state =
 interpretThumbPositionAnimation : AnimationState -> State -> State
 interpretThumbPositionAnimation animationState state =
   let
-    ease = Ease.inOutCirc
+    ease = Ease.inOutSine
     delta =
       (animationState.end - animationState.start) *
       (ease animationState.progress - ease animationState.previousProgress)
@@ -96,7 +97,7 @@ interpretThumbPositionAnimation animationState state =
 selectedTest : State
 selectedTest =
   {
-    scaleXOffset = 0,
+    scaleXMargin = 41,
     scaleWidth = 518,
     thumbPositionAnimations = [],
     drag = Nothing,
@@ -104,6 +105,7 @@ selectedTest =
     thumbPosition = 0.75,
     activeFactor = 1,
     labelsFont = "Arial",
-    labels = Array.fromList ["Полностью не согласен", "Скорее не согласен", "Затрудняюсь ответить", "Скорее согласен", "Полностью не согласен"],
-    colors = Colors.metrix
+    labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
+    colors = Colors.metrix,
+    hoverLable = Nothing
   }

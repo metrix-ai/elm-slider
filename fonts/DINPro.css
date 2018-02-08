@@ -1,0 +1,20 @@
+@font-face {
+  font-family: DINPro;
+  font-weight: 300;
+  src: url("/fonts/DINPro-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: DINPro;
+  font-weight: 400;
+  src: url("/fonts/DINPro-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: DINPro;
+  font-weight: 500;
+  src: url("/fonts/DINPro-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: DINPro;
+  font-weight: 700;
+  src: url("/fonts/DINPro-Bold.ttf") format("truetype");
+}

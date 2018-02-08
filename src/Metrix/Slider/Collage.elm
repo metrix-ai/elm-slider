@@ -2,11 +2,14 @@ module Metrix.Slider.Collage exposing (..)
 
 import Collage exposing (..)
 import Collage.Layout exposing (..)
+import Collage.Text exposing(..)
+import Collage.Events exposing(..)
+import Color exposing(..)
 import Metrix.Slider.State exposing (State)
-import Metrix.Slider.Update exposing (Update)
-import Metrix.Slider.Maybe as Maybe
+import Metrix.Slider.Update exposing (..)
 import Color.Interpolate
 import Array
+import String
 
 
 type alias SliderRender = State -> Collage Update
@@ -19,6 +22,50 @@ scale scaleWidth state =
       scaleBar scaleWidth state
     ]
 
+labels : Float -> SliderRender
+labels scaleWidth state =
+  state.labels |>
+  Array.indexedMap
+    (\ index label ->
+      let
+        x = (scaleWidth / toFloat (Array.length state.labels - 1)) * toFloat index
+      in shift (x, -30) ((textLabel index state) label)) |>
+  Array.toList |>
+  group
+
+textLabel : Int -> State -> String -> Collage Update
+textLabel index state label =
+  let
+    labelt = (String.lines label)
+  in
+    List.indexedMap (lineLabel index state) labelt |>
+    group |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
+
+lineLabel : Int -> State -> Int -> String -> Collage Update
+lineLabel indexDot state index str =
+  let
+    text =
+      fromString str
+      |> size small
+      |> typeface (Font "DINPro")
+      |>  color state.colors.inactiveLabel
+      |> weight Light
+  in
+    let
+      res =
+        if indexDot == (round (state.thumbPosition * 4)) then
+          text |> weight Medium |> color state.colors.activeLabel
+        else
+          case state.hoverLable of
+            Just i -> if indexDot == i then
+                          text |> color state.colors.activeLabel
+                        else
+                          text
+            _ -> text
+
+    in
+      res |> rendered |> shift (0, -15 * (toFloat index))
+
 scaleBar : Float -> SliderRender
 scaleBar scaleWidth state =
   filled
@@ -30,10 +77,11 @@ scaleBar scaleWidth state =
 
 scaleStop : SliderRender
 scaleStop state =
-  styled
-    (uniform state.colors.scaleStop, solid 0.5 (uniform state.colors.outline))
-    (circle 4.5) |>
-  center
+    styled
+      (uniform state.colors.scaleStop, solid 0.5 (uniform state.colors.outline))
+      (circle 4.5) |>
+    center
+
 
 scaleStops : Float -> SliderRender
 scaleStops scaleWidth state =
@@ -43,13 +91,14 @@ scaleStops scaleWidth state =
     (\ index stop ->
       let
         x = (scaleWidth / toFloat (Array.length state.labels - 1)) * toFloat index
+        label = Array.get index state.labels
       in shift (x, 0) stop) |>
   group
 
 thumb : SliderRender
 thumb state =
-  filled
-    (uniform state.colors.thumb)
+  styled
+    (uniform state.colors.thumb, solid 0.5 (uniform state.colors.outline))
     (circle 12) |>
   center
 
@@ -58,5 +107,6 @@ unlabeledSlider scaleWidth state =
   group
     [
       thumb state |> shift (scaleWidth * state.thumbPosition, 0),
-      scale scaleWidth state
+      scale scaleWidth state,
+      labels scaleWidth state
     ]
