@@ -1,9 +1,23 @@
-module Metrix.Slider.Update exposing (..)
+module Metrix.Slider.Update
+    exposing
+        ( Update(..)
+        , update
+        )
+{-|
+# Definitions
 
+@docs Update
+
+# Update function
+
+@docs update
+-}
 import Metrix.Slider.State as State exposing (State)
 import Time exposing (Time)
 
-
+{-|
+Message type
+-}
 type Update =
   DragStartedUpdate Int Int |
   DragProgressedUpdate Int |
@@ -13,6 +27,9 @@ type Update =
   EnterLabel Int |
   LeaveLabel
 
+{-|
+update function
+-}
 update : Update -> State -> (State, Cmd Update)
 update update =
     case update of

@@ -1,11 +1,33 @@
-module Metrix.Slider.State exposing (..)
+module Metrix.Slider.State
+    exposing
+        ( State
+        , AnimationState
+        , defaultInit
+        , setMouseDownPosition
+        , updatePositionAnimations
+        , applyThumbPositionAnimations
+        )
+{-|
+# Definitions
 
+@docs State, AnimationState
+
+# Initialize
+
+@docs defaultInit
+
+# Service functions
+
+@docs setMouseDownPosition, updatePositionAnimations, applyThumbPositionAnimations
+-}
 import Array
 import Metrix.Slider.Colors as Colors
 import Time exposing (Time)
 import Ease
 
-
+{-|
+Slider model
+-}
 type alias State =
   {
     scaleXMargin : Int,
@@ -20,7 +42,9 @@ type alias State =
     hoverLable : Maybe Int,
     colors : Colors.Colors
   }
-
+{-|
+Animation model
+-}
 type alias AnimationState =
   {
     start : Float,
@@ -30,6 +54,9 @@ type alias AnimationState =
     duration : Time
   }
 
+{-|
+
+-}
 setMouseDownPosition : Int -> State -> State
 setMouseDownPosition mouse state =
   case state.value of
@@ -66,6 +93,9 @@ setMouseDownPosition mouse state =
         _ -> state
     _ -> Debug.crash "TODO"
 
+{-|
+
+-}
 updatePositionAnimations : Time -> State -> State
 updatePositionAnimations timeDiff state =
   state.thumbPositionAnimations |>
@@ -79,6 +109,9 @@ updatePositionAnimations timeDiff state =
   List.filter (\ x -> x.progress <= 1) |>
   \ newAnimationStates -> {state| thumbPositionAnimations = newAnimationStates}
 
+{-|
+
+-}
 applyThumbPositionAnimations : State -> State
 applyThumbPositionAnimations state =
   state.thumbPositionAnimations |>
@@ -94,8 +127,11 @@ interpretThumbPositionAnimation animationState state =
     newThumbPosition = state.thumbPosition + delta
   in {state| thumbPosition = newThumbPosition}
 
-selectedTest : State
-selectedTest =
+{-|
+Init default slider
+-}
+defaultInit : State
+defaultInit =
   {
     scaleXMargin = 41,
     scaleWidth = 518,

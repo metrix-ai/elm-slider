@@ -1,4 +1,11 @@
-module Metrix.Slider.Html exposing (..)
+module Metrix.Slider.Html
+  exposing ( labeledSlider )
+
+{-|
+# Render
+
+@docs labeledSlider
+-}
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -19,9 +26,11 @@ htmlStyleCss =
     "@import url(\"/fonts/DINPro.css\");" ++
     "@import url(\"/fonts/BebasNeue.css\");" ++
     ".style-elements .__3402792823 {  border-style: solid;}" |> text]
-
-unlabeledSlider : Float -> State -> Html Update
-unlabeledSlider width state =
+{-|
+Take width, instance of the slider model and render Metrix slider
+-}
+labeledSlider : Float -> State -> Html Update
+labeledSlider width state =
   div [] [(Collage.unlabeledSlider width state |>
   autosizedCollage state
     [

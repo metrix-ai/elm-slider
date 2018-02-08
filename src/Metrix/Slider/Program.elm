@@ -13,8 +13,8 @@ test1 : SliderProgram
 test1 =
   Html.beginnerProgram
     {
-      model = State.selectedTest,
-      view = Html.unlabeledSlider 518,
+      model = State.defaultInit,
+      view = Html.labeledSlider 518,
       update = always identity
     }
 
@@ -22,8 +22,8 @@ test2 : SliderProgram
 test2 =
   Html.program
     {
-      init = (State.selectedTest, Cmd.none),
-      view = Html.unlabeledSlider 518,
+      init = (State.defaultInit, Cmd.none),
+      view = Html.labeledSlider 518,
       update = Update.update,
       subscriptions = Subscriptions.all
     }
