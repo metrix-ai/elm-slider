@@ -79,7 +79,7 @@ setMouseDownPosition mouse state =
                       start = toFloat value / max
                       end = toFloat newValue / max
                     in
-                      { start = start, end = end, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 300 }
+                      { start = start, end = end, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 200 }
                 in
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
@@ -120,7 +120,7 @@ applyThumbPositionAnimations state =
 interpretThumbPositionAnimation : AnimationState -> State -> State
 interpretThumbPositionAnimation animationState state =
   let
-    ease = Ease.inOutSine
+    ease = Ease.inOutQuart
     delta =
       (animationState.end - animationState.start) *
       (ease animationState.progress - ease animationState.previousProgress)
