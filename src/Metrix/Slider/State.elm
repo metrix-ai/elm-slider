@@ -67,6 +67,7 @@ setMouseDownPosition mouse state =
           round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
           min 4 |>
           max 0
+        newActiveFactor = state.activeFactor + 1 |> clamp 0 1
       in
         case state.value of
           Just value ->
@@ -84,13 +85,14 @@ setMouseDownPosition mouse state =
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
                     drag = Just {dragState| mouse = mouse},
-                    value = Just newValue
+                    value = Just newValue,
+                    activeFactor = newActiveFactor
                   }
               else
                 {state|
                   drag = Just {dragState| mouse = mouse}
                 }
-          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4)}
+          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4), activeFactor = newActiveFactor}
     _ -> state
 
 {-|
@@ -142,7 +144,7 @@ defaultInit =
     drag = Nothing,
     value = Nothing,
     thumbPosition = Nothing,
-    activeFactor = 1,
+    activeFactor = 0,
     labelsFont = "Arial",
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
     colors = Colors.metrix,

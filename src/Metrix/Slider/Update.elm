@@ -34,13 +34,13 @@ update : Update -> State -> (State, Cmd Update)
 update update =
     case update of
       DragStartedUpdate mouse element ->
-        simple <| \ state ->
-          {state| drag = Just {element = element, mouse = mouse}} |>
+        simple <| \ state -> let newActiveFactor = 1 in
+          {state| drag = Just {element = element, mouse = mouse}, activeFactor = newActiveFactor} |>
           State.setMouseDownPosition mouse
       DragProgressedUpdate mouse -> simple (State.setMouseDownPosition mouse)
       DragStoppedUpdate mouse ->
         simple <| \ state ->
-          {state| drag = Nothing}
+          {state| drag = Nothing, activeFactor = 1}
       TimeDiffUpdate time ->
         simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations
       EnterLabel index -> simple <| \state -> {state| hoverLable = Just index}

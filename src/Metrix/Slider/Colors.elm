@@ -31,7 +31,7 @@ metrix =
   in
     {
       activeBar = darkSkyBlue,
-      inactiveBar = brownishGrey,
+      inactiveBar = outLineGrey,
       thumb = darkSkyBlue,
       scaleStop = white,
       outline = outLineGrey,
