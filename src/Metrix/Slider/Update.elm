@@ -35,18 +35,18 @@ update : Update -> State -> (State, Cmd Update)
 update update =
     case update of
       DragStartedUpdate mouse element ->
-        simple <| \ state -> let newActiveFactor = 1 in
-          {state| drag = Just {element = element, mouse = mouse}, activeFactor = newActiveFactor} |>
-          State.setMouseDownPosition mouse |> State.setGradientAnimation
+        simple <| \ state ->
+          {state| drag = Just {element = element, mouse = mouse}} |>
+          State.setGradientAnimation |> State.setMouseDownPosition mouse
       DragProgressedUpdate mouse -> simple (State.setMouseDownPosition mouse)
       DragStoppedUpdate mouse ->
         simple <| \ state ->
-          {state| drag = Nothing, activeFactor = 1}
+          {state| drag = Nothing}
       TimeDiffUpdate time ->
         simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations
       EnterLabel index -> simple <| \state -> {state| hoverLable = Just index}
       LeaveLabel -> simple <| \state -> {state| hoverLable = Nothing}
-      GradientUpdate _ -> Debug.crash "TODO"
+      GradientUpdate time -> simple <| State.updateGradientAnimations time >> State.applyGradientAnimations
       _ ->
         Debug.crash "TODO"
 

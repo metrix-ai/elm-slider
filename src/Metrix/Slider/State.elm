@@ -7,6 +7,8 @@ module Metrix.Slider.State
         , updatePositionAnimations
         , applyThumbPositionAnimations
         , setGradientAnimation
+        , applyGradientAnimations
+        , updateGradientAnimations
         )
 {-|
 # Definitions
@@ -19,7 +21,9 @@ module Metrix.Slider.State
 
 # Service functions
 
-@docs setMouseDownPosition, updatePositionAnimations, applyThumbPositionAnimations, setGradientAnimation
+@docs setMouseDownPosition, setGradientAnimation,
+  updatePositionAnimations, applyThumbPositionAnimations,
+  applyGradientAnimations, updateGradientAnimations
 -}
 import Array
 import Metrix.Slider.Colors as Colors
@@ -42,8 +46,9 @@ type alias State =
     labels : Array.Array String,
     hoverLable : Maybe Int,
     colors : Colors.Colors,
-    gradientAnimations : List Float
+    gradientAnimations : List AnimationState
   }
+
 {-|
 Animation model
 -}
@@ -67,9 +72,7 @@ setMouseDownPosition mouse state =
         scaleProgress = toFloat (mouse - dragState.element - state.scaleXMargin) / toFloat state.scaleWidth
         newValue =
           round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
-          min 4 |>
-          max 0
-        newActiveFactor = state.activeFactor + 1 |> clamp 0 1
+          clamp 0 4
       in
         case state.value of
           Just value ->
@@ -87,21 +90,61 @@ setMouseDownPosition mouse state =
                   {state|
                     thumbPositionAnimations = newAnimation :: state.thumbPositionAnimations,
                     drag = Just {dragState| mouse = mouse},
-                    value = Just newValue,
-                    activeFactor = newActiveFactor
+                    value = Just newValue
                   }
               else
                 {state|
                   drag = Just {dragState| mouse = mouse}
                 }
-          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4), activeFactor = newActiveFactor}
+          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4)}
     _ -> state
 
 {-|
 
 -}
 setGradientAnimation : State -> State
-setGradientAnimation = identity
+setGradientAnimation state =
+  case state.value of
+    Nothing ->
+      let
+        newGradientAnimations = {start = 0, end = 1, progress = 0, previousProgress = 0, duration = Time.inMilliseconds 1000}
+      in
+        {state | gradientAnimations = newGradientAnimations :: state.gradientAnimations}
+    _ -> state
+
+{-|
+
+-}
+updateGradientAnimations : Time -> State -> State
+updateGradientAnimations timeDiff state =
+  state.gradientAnimations |>
+  List.map (\ x ->
+    let
+      newProgress =
+        if x.progress < 1
+          then min 1 (x.progress + timeDiff / x.duration)
+          else (x.progress + timeDiff / x.duration)
+    in {x| progress = newProgress, previousProgress = x.progress}) |>
+  List.filter (\ x -> x.progress <= 1) |>
+  \ newGradientAnimations -> {state| gradientAnimations = newGradientAnimations}
+
+{-|
+
+-}
+applyGradientAnimations : State -> State
+applyGradientAnimations state =
+  state.gradientAnimations |>
+  List.foldr (interpretGradientAnimations) state
+
+interpretGradientAnimations: AnimationState -> State -> State
+interpretGradientAnimations animationState state =
+  let
+    ease = Ease.outQuint 
+    delta =
+      (animationState.end - animationState.start) *
+      (ease animationState.progress - ease animationState.previousProgress)
+    newActiveFactor = state.activeFactor + delta
+  in {state| activeFactor = newActiveFactor}
 
 {-|
 
