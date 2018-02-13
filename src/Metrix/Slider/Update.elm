@@ -25,7 +25,8 @@ type Update =
   TimeDiffUpdate Time |
   ValueSetUpdate Int |
   EnterLabel Int |
-  LeaveLabel
+  LeaveLabel |
+  GradientUpdate Time
 
 {-|
 update function
@@ -36,7 +37,7 @@ update update =
       DragStartedUpdate mouse element ->
         simple <| \ state -> let newActiveFactor = 1 in
           {state| drag = Just {element = element, mouse = mouse}, activeFactor = newActiveFactor} |>
-          State.setMouseDownPosition mouse
+          State.setMouseDownPosition mouse |> State.setGradientAnimation
       DragProgressedUpdate mouse -> simple (State.setMouseDownPosition mouse)
       DragStoppedUpdate mouse ->
         simple <| \ state ->
@@ -45,6 +46,7 @@ update update =
         simple <| State.updatePositionAnimations time >> State.applyThumbPositionAnimations
       EnterLabel index -> simple <| \state -> {state| hoverLable = Just index}
       LeaveLabel -> simple <| \state -> {state| hoverLable = Nothing}
+      GradientUpdate _ -> Debug.crash "TODO"
       _ ->
         Debug.crash "TODO"
 

@@ -6,6 +6,7 @@ module Metrix.Slider.State
         , setMouseDownPosition
         , updatePositionAnimations
         , applyThumbPositionAnimations
+        , setGradientAnimation
         )
 {-|
 # Definitions
@@ -18,7 +19,7 @@ module Metrix.Slider.State
 
 # Service functions
 
-@docs setMouseDownPosition, updatePositionAnimations, applyThumbPositionAnimations
+@docs setMouseDownPosition, updatePositionAnimations, applyThumbPositionAnimations, setGradientAnimation
 -}
 import Array
 import Metrix.Slider.Colors as Colors
@@ -40,7 +41,8 @@ type alias State =
     labelsFont : String,
     labels : Array.Array String,
     hoverLable : Maybe Int,
-    colors : Colors.Colors
+    colors : Colors.Colors,
+    gradientAnimations : List Float
   }
 {-|
 Animation model
@@ -98,6 +100,12 @@ setMouseDownPosition mouse state =
 {-|
 
 -}
+setGradientAnimation : State -> State
+setGradientAnimation = identity
+
+{-|
+
+-}
 updatePositionAnimations : Time -> State -> State
 updatePositionAnimations timeDiff state =
   state.thumbPositionAnimations |>
@@ -148,5 +156,6 @@ defaultInit =
     labelsFont = "Arial",
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
     colors = Colors.metrix,
-    hoverLable = Nothing
+    hoverLable = Nothing,
+    gradientAnimations = []
   }

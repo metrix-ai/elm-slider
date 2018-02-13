@@ -24,10 +24,17 @@ animation state =
     then none
     else AnimationFrame.diffs Update.TimeDiffUpdate
 
+gradient : State -> Sub Update
+gradient state =
+  if List.isEmpty state.gradientAnimations
+    then none
+    else AnimationFrame.diffs Update.GradientUpdate
+
 all : State -> Sub Update
 all state =
   batch
     [
       drag state,
-      animation state
+      animation state,
+      gradient state
     ]
