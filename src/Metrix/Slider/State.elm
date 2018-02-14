@@ -189,7 +189,7 @@ Init default slider
 defaultInit : State
 defaultInit =
   {
-    scaleXMargin = 41,
+    scaleXMargin = 81,
     scaleWidth = 518,
     thumbPositionAnimations = [],
     drag = Nothing,

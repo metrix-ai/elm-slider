@@ -37,8 +37,8 @@ textLabel index state label =
   let
     labelt = (String.lines label)
   in
-    List.indexedMap (lineLabel index state) labelt |>
-    group |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
+    (List.indexedMap (lineLabel index state) (labelt) |>
+    vertical) :: [spacer 71 30] |> stack |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
 
 lineLabel : Int -> State -> Int -> String -> Collage Update
 lineLabel indexDot state index str =
@@ -126,16 +126,24 @@ labeledSlider : Float -> SliderRender
 labeledSlider scaleWidth state =
     case state.thumbPosition of
       Just position ->
-        group
-          [
-            thumb state |> shift (scaleWidth * position, 0),
-            scale scaleWidth state,
-            labels scaleWidth state
+        horizontal [
+          spacer 46.625 0,
+          group
+            [
+              thumb state |> shift (scaleWidth * position, 0),
+              scale scaleWidth state,
+              labels scaleWidth state
+            ]
+          , spacer 46.625 0
           ]
       _ ->
-        group
-          [
-            outlined invisible (circle 12),
-            scale scaleWidth state,
-            labels scaleWidth state
+        horizontal [
+          spacer 46.625 0,
+          group
+            [
+              outlined invisible (circle 12),
+              scale scaleWidth state,
+              labels scaleWidth state
+            ]
+          , spacer 46.625 0
           ]
