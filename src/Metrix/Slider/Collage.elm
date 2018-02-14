@@ -105,10 +105,22 @@ scaleStops scaleWidth state =
 
 thumb : SliderRender
 thumb state =
-  styled
-    (uniform state.colors.thumb, solid 0.5 (uniform state.colors.outline))
-    (circle 12) |>
-  center
+  group
+  [
+    (styled
+      (uniform state.colors.thumb, invisible)
+      (circle 12) |>
+    center),
+    (styled
+      (uniform state.colors.outlinethumbBlur, invisible)
+      (circle 12) |>
+    center) |> shift (1, -1)
+    -- (styled
+    --   (uniform state.colors.outlinethumbBlur, invisible)
+    --   (rectangle 4 24.1) |>
+    -- center) |> shift (-2, 0)
+
+  ]
 
 labeledSlider : Float -> SliderRender
 labeledSlider scaleWidth state =
@@ -123,6 +135,7 @@ labeledSlider scaleWidth state =
       _ ->
         group
           [
+            outlined invisible (circle 12),
             scale scaleWidth state,
             labels scaleWidth state
           ]

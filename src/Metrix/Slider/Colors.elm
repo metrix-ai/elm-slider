@@ -10,6 +10,8 @@ type alias Colors =
     thumb : Color,
     scaleStop : Color,
     outline : Color,
+    outlinethumb : Color,
+    outlinethumbBlur : Color,
     activeLabel : Color,
     inactiveLabel : Color
   }
@@ -28,13 +30,17 @@ metrix =
     veryLightBlue = rgb 229 236 255
     darkSkyBlue = rgb 74 144 226
     outLineGrey = rgba 78 75 75 0.69
+    outLineGreyThumb = rgba 78 75 75 0.4
+    outLineGreyThumbBlur = rgba 78 75 75 0.4
   in
     {
       activeBar = darkSkyBlue,
-      inactiveBar = brownishGrey,
+      inactiveBar = outLineGrey,
       thumb = darkSkyBlue,
       scaleStop = white,
-      outline = outLineGrey,
+      outline = outLineGreyThumb,
+      outlinethumb = outLineGreyThumb,
+      outlinethumbBlur = outLineGreyThumbBlur,
       activeLabel = darkSkyBlue,
       inactiveLabel = greyishBrown
     }
