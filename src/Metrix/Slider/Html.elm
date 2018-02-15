@@ -41,9 +41,6 @@ labeledSlider width state =
           (Tuple.first event.elementPosition)),
       style
         [
-          ("position", "fixed"),
-          ("top", "50%"),
-          ("left", "50%"),
           ("margin-left", toString (negate (width / 2)) ++ "px"),
           ("user-select", "none")
         ]
