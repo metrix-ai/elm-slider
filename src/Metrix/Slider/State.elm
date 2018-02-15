@@ -139,7 +139,7 @@ applyGradientAnimations state =
 interpretGradientAnimations: AnimationState -> State -> State
 interpretGradientAnimations animationState state =
   let
-    ease = Ease.outQuint 
+    ease = Ease.outQuint
     delta =
       (animationState.end - animationState.start) *
       (ease animationState.progress - ease animationState.previousProgress)

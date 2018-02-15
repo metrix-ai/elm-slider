@@ -38,14 +38,14 @@ textLabel index state label =
     labelt = (String.lines label)
   in
     (List.indexedMap (lineLabel index state) (labelt) |>
-    vertical) :: [spacer 71 30] |> stack |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
+    vertical) :: [spacer 77 50] |> stack |> onMouseEnter (\ _ -> (EnterLabel index)) |> onMouseLeave (\ _ -> LeaveLabel)
 
 lineLabel : Int -> State -> Int -> String -> Collage Update
 lineLabel indexDot state index str =
   let
     text =
       fromString str
-      |> size small
+      |> size 14
       |> typeface (Font "DINPro")
       |> color state.colors.inactiveLabel
       |> weight Light
@@ -72,7 +72,7 @@ lineLabel indexDot state index str =
               _ -> text
 
     in
-      res |> rendered |> shift (0, -15 * (toFloat index))
+      res |> rendered |> shift (0, -20 * (toFloat index))
 
 scaleBar : Float -> SliderRender
 scaleBar scaleWidth state =
@@ -115,11 +115,6 @@ thumb state =
       (uniform state.colors.outlinethumbBlur, invisible)
       (circle 12) |>
     center) |> shift (1, -1)
-    -- (styled
-    --   (uniform state.colors.outlinethumbBlur, invisible)
-    --   (rectangle 4 24.1) |>
-    -- center) |> shift (-2, 0)
-
   ]
 
 labeledSlider : Float -> SliderRender
@@ -127,23 +122,23 @@ labeledSlider scaleWidth state =
     case state.thumbPosition of
       Just position ->
         horizontal [
-          spacer 46.625 0,
+          spacer 46.625 70,
           group
             [
               thumb state |> shift (scaleWidth * position, 0),
               scale scaleWidth state,
               labels scaleWidth state
             ]
-          , spacer 46.625 0
+          , spacer 46.625 70
           ]
       _ ->
         horizontal [
-          spacer 46.625 0,
+          spacer 46.625 70,
           group
             [
               outlined invisible (circle 12),
               scale scaleWidth state,
               labels scaleWidth state
             ]
-          , spacer 46.625 0
+          , spacer 46.625 70
           ]

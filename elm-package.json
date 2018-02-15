@@ -9,7 +9,8 @@
     "exposed-modules": [
       "Metrix.Slider.Html",
       "Metrix.Slider.State",
-      "Metrix.Slider.Update"
+      "Metrix.Slider.Update",
+      "Metrix.Slider.Subscriptions"
     ],
     "native-modules": true,
     "dependencies": {

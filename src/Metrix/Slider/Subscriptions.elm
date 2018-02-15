@@ -1,5 +1,12 @@
-module Metrix.Slider.Subscriptions exposing (..)
+module Metrix.Slider.Subscriptions
+    exposing (all)
 
+
+{-|
+# Subscriptions function
+
+@docs all
+-}
 import Platform.Sub exposing (..)
 import Mouse
 import Metrix.Slider.State exposing (State)
@@ -30,6 +37,9 @@ gradient state =
     then none
     else AnimationFrame.diffs Update.GradientUpdate
 
+{-|
+Sub
+-}
 all : State -> Sub Update
 all state =
   batch
