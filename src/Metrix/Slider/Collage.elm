@@ -126,8 +126,8 @@ labeledSlider scaleWidth state =
           group
             [
               thumb state |> shift (scaleWidth * position, 0),
-              scale scaleWidth state,
-              labels scaleWidth state
+              scale scaleWidth state
+              --, labels scaleWidth state
             ]
           , spacer 46.625 70
           ]
@@ -137,8 +137,8 @@ labeledSlider scaleWidth state =
           group
             [
               outlined invisible (circle 12),
-              scale scaleWidth state,
-              labels scaleWidth state
+              scale scaleWidth state
+              --, labels scaleWidth state
             ]
           , spacer 46.625 70
           ]
