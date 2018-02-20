@@ -46,7 +46,8 @@ type alias State =
     labels : Array.Array String,
     hoverLable : Maybe Int,
     colors : Colors.Colors,
-    gradientAnimations : List AnimationState
+    gradientAnimations : List AnimationState,
+    elementPos: Int
   }
 
 {-|
@@ -69,7 +70,7 @@ setMouseDownPosition mouse state =
   case state.drag of
     Just dragState ->
       let
-        scaleProgress = toFloat (mouse - dragState.element - state.scaleXMargin) / toFloat state.scaleWidth
+        scaleProgress = toFloat (mouse - state.elementPos - state.scaleXMargin) / toFloat state.scaleWidth
         newValue =
           round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
           clamp 0 4
@@ -200,5 +201,6 @@ defaultInit =
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
     colors = Colors.metrix,
     hoverLable = Nothing,
-    gradientAnimations = []
+    gradientAnimations = [],
+    elementPos = 0
   }

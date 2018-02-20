@@ -22,6 +22,7 @@ type Update =
   DragStartedUpdate Int Int |
   DragProgressedUpdate Int |
   DragStoppedUpdate Int |
+  RememberElementPos Int |
   TimeDiffUpdate Time |
   ValueSetUpdate Int |
   EnterLabel Int |
@@ -38,6 +39,7 @@ update update =
         simple <| \ state ->
           {state| drag = Just {element = element, mouse = mouse}} |>
           State.setGradientAnimation |> State.setMouseDownPosition mouse
+      RememberElementPos pos -> simple <| \state -> {state | elementPos = pos}
       DragProgressedUpdate mouse -> simple (State.setMouseDownPosition mouse)
       DragStoppedUpdate mouse ->
         simple <| \ state ->

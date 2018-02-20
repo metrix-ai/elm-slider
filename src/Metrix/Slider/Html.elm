@@ -22,6 +22,7 @@ import Svg.Attributes
 import MouseEvents as ME
 import Color.Convert exposing (colorToCssRgba)
 import Color.Interpolate
+import Debug
 
 htmlStyleCss : Html msg
 htmlStyleCss =
@@ -48,7 +49,8 @@ htmlSlider : Float ->  State -> Html Update
 htmlSlider scaleWidth state =
   div [
       style [("padding",  "10px 70px")], 
-      ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x)
+      ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x),
+      ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
     ] [
       div [style [("width", toString scaleWidth ++ "px"), ("height", "90px"), ("user-select", "none")]] [
         over [
