@@ -36,13 +36,7 @@ Take width, instance of the slider model and render Metrix slider
 -}
 labeledSlider : State -> Html Update
 labeledSlider state =
-  div [] [(htmlSlider state
-      -- SvgEvents.onMouseDownWithDetails
-      --   (\ event ->
-      --     Update.DragStartedUpdate
-      --     (Tuple.first event.mousePosition)
-      --     (Tuple.first event.elementPosition)),
-    ), htmlStyleCss]
+  div [] [(htmlSlider state), htmlStyleCss]
 
 
 htmlSlider : State -> Html Update
@@ -157,32 +151,6 @@ row extraStyle elems =
     ] |> style
   ] elems
 
--- labeledSlider : Float ->  State -> Html Update
--- labeledSlider scaleWidth state =
---     case state.thumbPosition of
---       Just position ->
---         horizontal [
---           spacer 46.625 70,
---           group
---             [
---               thumb state |> shift (scaleWidth * position, 0),
---               scale scaleWidth state,
---               labels scaleWidth state
---             ]
---           , spacer 46.625 70
---           ]
---       _ ->
---         horizontal [
---           spacer 46.625 70,
---           group
---             [
---               outlined invisible (circle 12),
---               scale scaleWidth state,
---               labels scaleWidth state
---             ]
---           , spacer 46.625 70
---           ]
-
 -- place elements over each other (first is top)
 over : List (Html a) -> Html a
 over elements = 
@@ -191,13 +159,3 @@ over elements =
   in 
     List.foldr insert (div [] []) elements
           
-
-
-
-
-
-
------ FLEXBOX HELPERS | TODO  - create module
-
-
-
