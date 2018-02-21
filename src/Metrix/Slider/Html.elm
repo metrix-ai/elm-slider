@@ -118,14 +118,14 @@ textLabel state indexDot str =
           else
             case state.hoverLable of
               Just i -> if indexDot == i then
-                            (colorToCssRgba state.colors.activeLabel, "500")
+                            (colorToCssRgba state.colors.activeLabel, "300")
                           else
                             default
               _ -> default
         _ ->
           case state.hoverLable of
             Just i -> if indexDot == i then
-                          (colorToCssRgba state.colors.activeLabel, "500")
+                          (colorToCssRgba state.colors.activeLabel, "300")
                         else
                           default
             _ -> default
