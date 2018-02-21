@@ -48,11 +48,10 @@ labeledSlider width state =
 htmlSlider : Float ->  State -> Html Update
 htmlSlider scaleWidth state =
   div [
-      style [("padding",  "10px 70px")], 
       ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x),
       ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
     ] [
-      div [style [("width", toString scaleWidth ++ "px"), ("height", "90px"), ("user-select", "none")]] [
+      div [style [("width", toString scaleWidth ++ "px"), ("height", "92px"), ("user-select", "none")]] [
         over [
           div [style [("padding",  "0px 40px")]] [ over <|
             case state.thumbPosition of
@@ -101,7 +100,7 @@ labels scaleWidth state =
   state.labels |>
   Array.indexedMap (textLabel state) |>
   Array.toList |>
-  row [("width", toString (scaleWidth + 80) ++ "px"), ("position", "relative"), ("left", "0px"), ("top", "20px")]
+  row [("width", toString (scaleWidth + 80) ++ "px"), ("position", "relative"), ("left", "0px"), ("top", "15px")]
 
 
 
@@ -110,28 +109,28 @@ textLabel state indexDot str =
   let
     enter = ME.onMouseEnter (\_ -> Update.EnterLabel indexDot)
     leave = ME.onMouseLeave (\_ -> Update.LeaveLabel)
-    default = (colorToCssRgba state.colors.inactiveLabel, "regular")
+    default = (colorToCssRgba state.colors.inactiveLabel, "300")
     (color, weight) =
       case state.value of
         Just position ->
           if indexDot == position then
-            (colorToCssRgba state.colors.activeLabel, "medium")
+            (colorToCssRgba state.colors.activeLabel, "400")
           else
             case state.hoverLable of
               Just i -> if indexDot == i then
-                            (colorToCssRgba state.colors.activeLabel, "regular")
+                            (colorToCssRgba state.colors.activeLabel, "400")
                           else
                             default
               _ -> default
         _ ->
           case state.hoverLable of
             Just i -> if indexDot == i then
-                          (colorToCssRgba state.colors.activeLabel, "regular")
+                          (colorToCssRgba state.colors.activeLabel, "400")
                         else
                           default
             _ -> default
   in
-    pre [enter, leave, style [("size", "14px"), ("text-align", "center"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
+    pre [enter, leave, style [("font-size", "14px"), ("text-align", "center"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
 
 circle : Float -> List (String, String) -> Html a
 circle radius extraStyle = 

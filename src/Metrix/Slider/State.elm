@@ -70,10 +70,11 @@ setMouseDownPosition mouse state =
   case state.drag of
     Just dragState ->
       let
+        maxValue = Array.length state.labels - 1
         scaleProgress = toFloat (mouse - state.elementPos - state.scaleXMargin) / toFloat state.scaleWidth
         newValue =
-          round (scaleProgress * toFloat (Array.length state.labels - 1)) |>
-          clamp 0 4
+          round (scaleProgress * toFloat maxValue) |>
+          clamp 0 maxValue
       in
         case state.value of
           Just value ->
@@ -82,7 +83,7 @@ setMouseDownPosition mouse state =
                 let
                   newAnimation =
                     let
-                      max = toFloat (Array.length state.labels - 1)
+                      max = toFloat maxValue
                       start = toFloat value / max
                       end = toFloat newValue / max
                     in
@@ -97,7 +98,7 @@ setMouseDownPosition mouse state =
                 {state|
                   drag = Just {dragState| mouse = mouse}
                 }
-          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / 4)}
+          _ -> {state | value = Just newValue, thumbPosition = Just (toFloat newValue / toFloat maxValue)}
     _ -> state
 
 {-|
@@ -190,15 +191,15 @@ Init default slider
 defaultInit : State
 defaultInit =
   {
-    scaleXMargin = 81,
-    scaleWidth = 518,
+    scaleXMargin = 40,
+    scaleWidth = 680,
     thumbPositionAnimations = [],
     drag = Nothing,
     value = Nothing,
     thumbPosition = Nothing,
     activeFactor = 0,
     labelsFont = "Arial",
-    labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
+    labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен", "xyz xyz xyz"],
     colors = Colors.metrix,
     hoverLable = Nothing,
     gradientAnimations = [],
