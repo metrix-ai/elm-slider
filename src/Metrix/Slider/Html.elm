@@ -9,12 +9,8 @@ module Metrix.Slider.Html
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Collage
-import Collage.Render exposing(..)
-import Collage.Layout
 import Metrix.Slider.State as State exposing (State)
 import Metrix.Slider.Update as Update exposing (Update)
-import Metrix.Slider.Collage as Collage
 import Metrix.Slider.Svg.Events as SvgEvents
 import Array
 import Svg
