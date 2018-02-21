@@ -123,8 +123,10 @@ textLabel state indexDot str =
                         else
                           default
             _ -> default
+    fontSize =
+      toString state.labelFontSize ++ "px"
   in
-    pre [enter, leave, style [("font-size", "14px"), ("text-align", "center"), ("width", "90px"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
+    pre [enter, leave, style [("font-size", fontSize), ("text-align", "center"), ("width", "90px"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
 
 circle : Float -> List (String, String) -> Html a
 circle radius extraStyle = 

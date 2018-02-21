@@ -37,6 +37,7 @@ type alias State =
   {
     scaleXMargin : Int,
     scaleWidth : Float,
+    labelFontSize : Float,
     thumbPositionAnimations : List AnimationState,
     drag : Maybe { element : Int, mouse : Int },
     value : Maybe Int,
@@ -198,6 +199,7 @@ defaultInit =
     value = Nothing,
     thumbPosition = Nothing,
     activeFactor = 0,
+    labelFontSize = 14,
     labelsFont = "Arial",
     labels = Array.fromList ["Полностью \nне согласен", "Скорее \nне согласен", "Затрудняюсь \nответить", "Скорее \nсогласен", "Полностью \nсогласен"],
     colors = Colors.metrix,
