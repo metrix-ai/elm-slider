@@ -34,9 +34,9 @@ htmlStyleCss =
 {-|
 Take width, instance of the slider model and render Metrix slider
 -}
-labeledSlider : Float -> State -> Html Update
-labeledSlider width state =
-  div [] [(htmlSlider width state
+labeledSlider : State -> Html Update
+labeledSlider state =
+  div [] [(htmlSlider state
       -- SvgEvents.onMouseDownWithDetails
       --   (\ event ->
       --     Update.DragStartedUpdate
@@ -45,25 +45,25 @@ labeledSlider width state =
     ), htmlStyleCss]
 
 
-htmlSlider : Float ->  State -> Html Update
-htmlSlider scaleWidth state =
+htmlSlider : State -> Html Update
+htmlSlider state =
   div [
       ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x),
       ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
     ] [
-      div [style [("width", toString scaleWidth ++ "px"), ("height", "92px"), ("user-select", "none")]] [
+      div [style [("width", toString state.scaleWidth ++ "px"), ("height", "92px"), ("user-select", "none")]] [
         over [
           div [style [("padding",  "0px 40px")]] [ over <|
             case state.thumbPosition of
               Just position -> [
-                thumb (scaleWidth * position) state,
-                scale scaleWidth state
+                thumb (state.scaleWidth * position) state,
+                scale state
               ]
               _ -> [
-                scale scaleWidth state
+                scale state
               ]
             ],
-          labels scaleWidth state
+          labels state
         ]
       ]
     ]
@@ -73,13 +73,13 @@ thumb left state =
   circle 12 [("position", "relative"), ("left", toString left ++ "px"), ("top", "12px"), 
     ("background", colorToCssRgba state.colors.thumb), ("box-shadow", "-1px 0 2px 0 " ++ colorToCssRgba state.colors.outlinethumbBlur)]
 
-scale : Float -> State -> Html Update
-scale scaleWidth state =
+scale : State -> Html Update
+scale state =
   let 
     color = Color.Interpolate.interpolate Color.Interpolate.RGB state.colors.inactiveBar state.colors.activeBar state.activeFactor |> colorToCssRgba
   in
-    div [(style [("width", toString scaleWidth ++ "px"),("height", "6px"),("margin", "-3px"), ("text-align", "center"),  ("position", "relative"), ("left", "0px"), ("top", "11px"), ("background", color), ("border-radius", "3px")])] [
-      scaleStops scaleWidth state
+    div [(style [("width", toString state.scaleWidth ++ "px"),("height", "6px"),("margin", "-3px"), ("text-align", "center"),  ("position", "relative"), ("left", "0px"), ("top", "11px"), ("background", color), ("border-radius", "3px")])] [
+      scaleStops state
     ]
 
 scaleStop : State -> Html Update
@@ -89,18 +89,18 @@ scaleStop state =
     ("box-shadow", "0 0 3px 0 " ++ colorToCssRgba state.colors.outline)
   ]
 
-scaleStops : Float -> State -> Html Update
-scaleStops scaleWidth state =
+scaleStops : State -> Html Update
+scaleStops state =
   scaleStop state |>
   List.repeat (Array.length state.labels) |>
-  row [("width", toString scaleWidth ++ "px"), ("height", "6px")]
+  row [("width", toString state.scaleWidth ++ "px"), ("height", "6px")]
 
-labels : Float -> State -> Html Update
-labels scaleWidth state =
+labels : State -> Html Update
+labels state =
   state.labels |>
   Array.indexedMap (textLabel state) |>
   Array.toList |>
-  row [("width", toString (scaleWidth + 80) ++ "px"), ("position", "relative"), ("left", "0px"), ("top", "15px")]
+  row [("width", toString (state.scaleWidth + 80) ++ "px"), ("position", "relative"), ("left", "0px"), ("top", "15px")]
 
 
 
@@ -130,7 +130,7 @@ textLabel state indexDot str =
                           default
             _ -> default
   in
-    pre [enter, leave, style [("font-size", "14px"), ("text-align", "center"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
+    pre [enter, leave, style [("font-size", "14px"), ("text-align", "center"), ("width", "90px"), ("font-family", "DINPro"), ("color", color), ("font-weight", weight)]] [text str]
 
 circle : Float -> List (String, String) -> Html a
 circle radius extraStyle = 

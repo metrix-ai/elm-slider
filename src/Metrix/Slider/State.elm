@@ -36,7 +36,7 @@ Slider model
 type alias State =
   {
     scaleXMargin : Int,
-    scaleWidth : Int,
+    scaleWidth : Float,
     thumbPositionAnimations : List AnimationState,
     drag : Maybe { element : Int, mouse : Int },
     value : Maybe Int,
@@ -71,7 +71,7 @@ setMouseDownPosition mouse state =
     Just dragState ->
       let
         maxValue = Array.length state.labels - 1
-        scaleProgress = toFloat (mouse - state.elementPos - state.scaleXMargin) / toFloat state.scaleWidth
+        scaleProgress = toFloat (mouse - state.elementPos - state.scaleXMargin) / state.scaleWidth
         newValue =
           round (scaleProgress * toFloat maxValue) |>
           clamp 0 maxValue
@@ -192,7 +192,7 @@ defaultInit : State
 defaultInit =
   {
     scaleXMargin = 40,
-    scaleWidth = 680,
+    scaleWidth = 518,
     thumbPositionAnimations = [],
     drag = Nothing,
     value = Nothing,
