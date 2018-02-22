@@ -99,23 +99,23 @@ textLabel state indexDot str =
   let
     enter = ME.onMouseEnter (\_ -> Update.EnterLabel indexDot)
     leave = ME.onMouseLeave (\_ -> Update.LeaveLabel)
-    default = (colorToCssRgba state.colors.inactiveLabel, "300")
+    default = (colorToCssRgba state.colors.inactiveLabel, "400")
     (color, weight) =
       case state.value of
         Just position ->
           if indexDot == position then
-            (colorToCssRgba state.colors.activeLabel, "500")
+            (colorToCssRgba state.colors.activeLabel, "600")
           else
             case state.hoverLable of
               Just i -> if indexDot == i then
-                            (colorToCssRgba state.colors.activeLabel, "300")
+                            (colorToCssRgba state.colors.activeLabel, "400")
                           else
                             default
               _ -> default
         _ ->
           case state.hoverLable of
             Just i -> if indexDot == i then
-                          (colorToCssRgba state.colors.activeLabel, "300")
+                          (colorToCssRgba state.colors.activeLabel, "400")
                         else
                           default
             _ -> default
