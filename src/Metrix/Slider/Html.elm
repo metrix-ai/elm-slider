@@ -17,6 +17,7 @@ import Array
 import MouseEvents as ME
 import Color.Convert exposing (colorToCssRgba)
 import Color.Interpolate
+import Debug exposing (..)
 
 htmlStyleCss : Html msg
 htmlStyleCss =
@@ -30,15 +31,14 @@ Take width, instance of the slider model and render Metrix slider
 -}
 labeledSlider : State -> Html Update
 labeledSlider state =
-  div [] [(htmlSlider state), htmlStyleCss]
+  div [on "touchend" (Decode.succeed <| log "4321" <| Update.DragStoppedUpdate 0)] [(htmlSlider state), htmlStyleCss]
 
 
 htmlSlider : State -> Html Update
 htmlSlider state =
   div [
       ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x),
-      ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x),
-      on "touchend" (Decode.succeed <| Update.DragStoppedUpdate 0)
+      ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
     ] [
       div [style [("width", toString state.scaleWidth ++ "px"), ("height", "92px"), ("user-select", "none")]] [
         over [
