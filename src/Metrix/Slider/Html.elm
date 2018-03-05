@@ -9,16 +9,14 @@ module Metrix.Slider.Html
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (on)
+import Json.Decode as Decode
 import Metrix.Slider.State as State exposing (State)
 import Metrix.Slider.Update as Update exposing (Update)
-import Metrix.Slider.Svg.Events as SvgEvents
 import Array
-import Svg
-import Svg.Attributes
 import MouseEvents as ME
 import Color.Convert exposing (colorToCssRgba)
 import Color.Interpolate
-import Debug
 
 htmlStyleCss : Html msg
 htmlStyleCss =
@@ -39,7 +37,8 @@ htmlSlider : State -> Html Update
 htmlSlider state =
   div [
       ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x),
-      ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
+      ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x),
+      on "touchend" (Decode.succeed <| Update.DragStoppedUpdate 0)
     ] [
       div [style [("width", toString state.scaleWidth ++ "px"), ("height", "92px"), ("user-select", "none")]] [
         over [
