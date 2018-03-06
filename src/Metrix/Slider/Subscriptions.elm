@@ -19,7 +19,11 @@ drag state =
   case state.drag of
     Nothing -> none
     Just _ ->
-          Mouse.moves (.x >> Update.DragProgressedUpdate)
+      batch
+        [
+          Mouse.moves (.x >> Update.DragProgressedUpdate),
+          Mouse.ups (.x >> Update.DragStoppedUpdate)
+        ]
 
 animation : State -> Sub Update
 animation state =
