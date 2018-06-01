@@ -123,7 +123,10 @@ labels state =
     state.labels
         |> Array.indexedMap (textLabel state)
         |> Array.toList
-        |> row [ ( "width", toString (state.scaleWidth + 80) ++ "px" ), ( "position", "relative" ), ( "left", "0px" ), ( "top", "15px" ) ]
+        |> row
+            [ ( "width", toString (state.scaleWidth + 80) ++ "px" )
+            , ( "padding-top", "25px" )
+            ]
 
 
 textLabel : State -> Int -> String -> Html Update
@@ -168,13 +171,13 @@ textLabel state indexDot str =
         fontSize =
             toString state.labelFontSize ++ "px"
     in
-    pre
+    span
         [ enter
         , leave
         , style
             [ ( "font-size", fontSize )
             , ( "text-align", "center" )
-            , ( "width", "90px" )
+            , ( "width", "87px" )
             , ( "font-family", "DINPro" )
             , ( "-moz-user-select", "none" )
             , ( "-ms-user-select", "none" )
