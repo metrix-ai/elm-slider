@@ -14,8 +14,6 @@ import Color.Convert exposing (colorToCssRgba)
 import Color.Interpolate
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (on)
-import Json.Decode as Decode
 import Metrix.Slider.State as State exposing (State)
 import Metrix.Slider.Update as Update exposing (Update)
 import MouseEvents as ME
@@ -176,7 +174,8 @@ textLabel state indexDot str =
         , style
             [ ( "font-size", fontSize )
             , ( "text-align", "center" )
-            , ( "width", "87px" )
+            , ( "max-width", "88px" )
+            , ( "min-width", "88px" )
             , ( "font-family", "DINPro" )
             , ( "-moz-user-select", "none" )
             , ( "-ms-user-select", "none" )
