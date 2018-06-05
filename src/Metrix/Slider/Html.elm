@@ -1,11 +1,11 @@
-module Metrix.Slider.Html exposing (labeledSlider)
+module Metrix.Slider.Html exposing (view)
 
 {-|
 
 
 # Render
 
-@docs labeledSlider
+@docs view
 
 -}
 
@@ -35,16 +35,15 @@ htmlStyleCss =
 
 {-| Take width, instance of the slider model and render Metrix slider
 -}
-labeledSlider : State -> Html Update
-labeledSlider state =
+view : State -> Html Update
+view state =
     div [] [ htmlSlider state, htmlStyleCss ]
 
 
 htmlSlider : State -> Html Update
 htmlSlider state =
     div
-        [ ME.onMouseDown (\e -> Update.DragStartedUpdate e.clientPos.x e.targetPos.x)
-        , ME.onMouseUp (\e -> Update.DragStoppedUpdate e.clientPos.x)
+        [ ME.onMouseDown (\e -> Update.OnMouseDown e.clientPos.x e.targetPos.x)
         , ME.onMouseEnter (\e -> Update.RememberElementPos e.targetPos.x)
         ]
         [ div [ style [ ( "width", toString state.scaleWidth ++ "px" ), ( "height", "92px" ), ( "user-select", "none" ) ] ]
