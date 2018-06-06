@@ -1,0 +1,82 @@
+.slider-wrapper {
+  width: 518px;
+}
+
+.slider-track-marker-wrapper {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+}
+
+.slider-track-marker {
+  background: rgb(255, 255, 255);
+  box-shadow: rgba(78, 75, 75, 0.4) 0px 0px 3px 0px;
+  width: 9px;
+  height: 9px;
+  border-radius: 4.5px;
+  margin-top: -2px;
+}
+
+.slider-pointer {
+  display:none;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: rgb(74, 144, 226);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: rgba(78, 75, 75, 0.4) -1px 0px 2px 0px;
+  z-index: 1;
+  transition: 200ms ease-in-out;
+  top: 50%;
+}
+
+.slider-line {
+  width: 518px;
+  height: 6px;
+  margin: -3px;
+  text-align: center;
+  position: relative;
+  left: 0px;
+  background: rgba(78, 75, 75, 0.69);
+  border-radius: 3px;
+  user-select: none;
+}
+
+.labels-wrapper {
+  display: flex;
+  width: 591px;
+  justify-content: space-between;
+  position: relative;
+  left: -37px;
+  top: 5px;
+}
+
+pre {
+  font-size: 12px;
+  text-align: center;
+  width: 90px;
+  font-family: DINPro;
+  user-select: none;
+  color: rgb(74, 74, 74);
+  font-weight: 400;
+}
+
+pre:hover {
+  color: rgb(74, 144, 226);
+  cursor: pointer;
+}
+
+pre.label--active {
+  color: rgb(74, 144, 226);
+  font-weight: 600;
+}
+
+.slider-wrapper--active .slider-line {
+  background: rgb(74, 144, 226);
+}
+
+.slider-wrapper--active .slider-pointer {
+  display:block;
+}
+

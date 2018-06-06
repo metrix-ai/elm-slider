@@ -7,13 +7,14 @@
         "src"
     ],
     "exposed-modules": [
-      "Metrix.Slider.Html",
-      "Metrix.Slider.State",
-      "Metrix.Slider.Update",
-      "Metrix.Slider.Subscriptions"
+        "Metrix.Slider.Html",
+        "Metrix.Slider.State",
+        "Metrix.Slider.Update",
+        "Metrix.Slider.Subscriptions"
     ],
     "native-modules": true,
     "dependencies": {
+        "debois/elm-dom": "1.2.3 <= v < 2.0.0",
         "elm-community/easing-functions": "1.0.2 <= v < 2.0.0",
         "elm-community/maybe-extra": "4.0.0 <= v < 5.0.0",
         "elm-lang/animation-frame": "1.0.1 <= v < 2.0.0",
