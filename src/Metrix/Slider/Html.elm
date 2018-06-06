@@ -174,8 +174,8 @@ textLabel state indexDot str =
         , style
             [ ( "font-size", fontSize )
             , ( "text-align", "center" )
-            , ( "max-width", "88px" )
-            , ( "min-width", "88px" )
+            , ( "max-width", "89px" )
+            , ( "min-width", "89px" )
             , ( "font-family", "DINPro" )
             , ( "-moz-user-select", "none" )
             , ( "-ms-user-select", "none" )
